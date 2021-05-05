@@ -1,4 +1,4 @@
-const cardsRouter = require('express').Router();
+const moviesRouter = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const isURL = require('validator/lib/isURL');
 
@@ -59,8 +59,7 @@ moviesRouter.post(
         }
         return helper.message('Неверный URL');
       }),
-      owner: Joi.string().hex().length(24).required(),
-      movieId: Joi.string().hex().length(24).required(),
+      movieId: Joi.number().required(),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
     }),

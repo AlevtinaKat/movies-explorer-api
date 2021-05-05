@@ -29,7 +29,7 @@ module.exports.deleteMovie = (req, res, next) => {
     })
     .catch((error) => {
       const err = new Error();
-      err.message = 'Фильм с указанным _id не найдена';
+      err.message = 'Фильм с указанным _id не найден';
       err.statusCode = 404;
 
       if (error.message === 'WrongUser') {
