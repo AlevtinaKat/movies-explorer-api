@@ -32,7 +32,7 @@ router.use('/movies', auth, moviesRouter);
 
 router.use('/*', (req, res, next) => {
   const err = new Error();
-  err.message = 'Запрос не найден.';
+  err.message = 'EQUEST_NOT_FOUND';
   err.statusCode = 404;
 
   next(err);

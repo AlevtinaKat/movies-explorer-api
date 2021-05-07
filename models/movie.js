@@ -32,7 +32,7 @@ const movieSchema = new mongoose.Schema({
           require_tld: true,
           require_protocol: true,
         }),
-      message: 'Неправильный формат URL',
+      message: 'WRONG_URL',
     },
   },
   trailer : {
@@ -44,7 +44,7 @@ const movieSchema = new mongoose.Schema({
           require_tld: true,
           require_protocol: true,
         }),
-      message: 'Неправильный формат URL',
+      message: 'WRONG_URL',
     },
   },
   thumbnail : {
@@ -56,7 +56,7 @@ const movieSchema = new mongoose.Schema({
           require_tld: true,
           require_protocol: true,
         }),
-      message: 'Неправильный формат URL',
+      message: 'WRONG_URL',
     },
   },
   owner: {

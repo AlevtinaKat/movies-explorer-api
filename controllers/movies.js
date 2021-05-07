@@ -13,7 +13,7 @@ module.exports.createMovie = (req, res, next) => {
   .then((movie) => res.send(movie))
     .catch(() => {
       const err = new Error(
-        'Переданы некорректные данные при добавлении фильма.',
+        'INCCORRECT_DATA_MOVIE',
       );
       err.statusCode = 400;
 
@@ -29,7 +29,7 @@ module.exports.deleteMovie = (req, res, next) => {
     })
     .catch((error) => {
       const err = new Error();
-      err.message = 'Фильм с указанным _id не найден';
+      err.message = 'MOVIE_ID_NOT_FOUND';
       err.statusCode = 404;
 
       if (error.message === 'WrongUser') {

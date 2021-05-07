@@ -9,27 +9,22 @@ const { errors } = require('celebrate');
 const { error } = require('./middlewares/error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routers/index.js');
+const { MONGO_ADDRES, PORT_NUMBER, WHITE_LIST } = require('./utils/constants');
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+mongoose.connect(MONGO_ADDRES, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
 
-const { PORT = 3000 } = process.env;
+const { PORT = PORT_NUMBER } = process.env;
 
 const app = express();
 
-const whitelist = [
-  'https://akataeva.students.nomoredomains.icu',
-  'http://akataeva.students.nomoredomains.icu',
-  'http://localhost',
-];
-
 const corsOptions = {
   origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
+    if (WHITE_LIST.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));

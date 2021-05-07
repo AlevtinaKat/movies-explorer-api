@@ -13,7 +13,7 @@ module.exports.getUser = (req, res, next) => {
     .orFail(new Error('NotFound'))
     .then((user) => res.send(user))
     .catch((error) => {
-      const err = new Error('Передан некорректный id');
+      const err = new Error('INCORRECT_ID');
       err.statusCode = 404;
 
       if (error.name === 'CastError') {
@@ -39,10 +39,10 @@ module.exports.createUser = (req, res, next) => {
     .catch((error) => {
       const err = new Error();
       if (error.name === 'MongoError') {
-        err.message = 'Пользователь с таким email уже существует.';
+        err.message = 'SER_MAIL_EXISTS';
         err.statusCode = 409;
       } else {
-        err.message = 'Переданы некорректные данные при создании пользователя.';
+        err.message = 'INCORRECT_DATA_CREAT_USER';
         err.statusCode = 400;
       }
 
@@ -56,7 +56,7 @@ module.exports.updateUser = (req, res, next) => {
 
   if (!name || !email) {
     const err = new Error(
-      'Переданы некорректные данные при обновлении профиля.',
+      'INCORRECT_DATA_UPDATE_PROFILE',
     );
     err.statusCode = 400;
     return next(err);
@@ -74,7 +74,7 @@ module.exports.updateUser = (req, res, next) => {
     .then((user) => res.send(user))
     .catch(() => {
       const err = new Error(
-        'Переданы некорректные данные при обновлении профиля.',
+        'INCORRECT_DATA_UPDATE_PROFILE',
       );
       err.statusCode = 400;
 

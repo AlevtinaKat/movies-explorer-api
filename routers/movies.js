@@ -37,7 +37,7 @@ moviesRouter.post(
         })) {
           return value;
         }
-        return helper.message('Неверный URL');
+        return helper.message('WRONG_URL');
       }),
       trailer: Joi.string().required().custom((value, helper) => {
         if (isURL(value, {
@@ -47,7 +47,7 @@ moviesRouter.post(
         })) {
           return value;
         }
-        return helper.message('Неверный URL');
+        return helper.message('WRONG_URL');
       }),
       thumbnail: Joi.string().required().custom((value, helper) => {
         if (isURL(value, {
@@ -57,7 +57,7 @@ moviesRouter.post(
         })) {
           return value;
         }
-        return helper.message('Неверный URL');
+        return helper.message('WRONG_URL');
       }),
       movieId: Joi.number().required(),
       nameRU: Joi.string().required(),

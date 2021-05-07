@@ -8,7 +8,7 @@ module.exports.auth = (req, res, next) => {
     payload = jwt.verify(req.cookies.jwt, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {
     const error = new Error();
-    error.message = 'Неправильный JWT токен.';
+    error.message = 'WRONG_JWT_TOKEN';
     error.statusCode = 401;
 
     next(error);
