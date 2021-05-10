@@ -1,6 +1,11 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const NotFoundError = require('../errors/NotFoundError');
+const BadRequestError = require('../errors/BadRequestError');
+const ConflictError = require('../errors/ConflictError');
+const UnauthorizedError = require('../errors/UnauthorizedError');
+const { INCORRECT_ID, USER_MAIL_EXISTS, INCORRECT_DATA_CREAT_USER, INCORRECT_DATA_UPDATE_PROFILE } = require('../utils/constants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -13,14 +18,11 @@ module.exports.getUser = (req, res, next) => {
     .orFail(new Error('NotFound'))
     .then((user) => res.send(user))
     .catch((error) => {
-      const err = new Error('INCORRECT_ID');
-      err.statusCode = 404;
-
       if (error.name === 'CastError') {
-        err.statusCode = 400;
+        return next(new BadRequestError(INCORRECT_ID));
       }
 
-      next(err);
+      return next(new NotFoundError(INCORRECT_ID));
     });
 };
 
@@ -37,16 +39,10 @@ module.exports.createUser = (req, res, next) => {
       res.send(user);
     })
     .catch((error) => {
-      const err = new Error();
       if (error.name === 'MongoError') {
-        err.message = 'SER_MAIL_EXISTS';
-        err.statusCode = 409;
-      } else {
-        err.message = 'INCORRECT_DATA_CREAT_USER';
-        err.statusCode = 400;
+        return next(new ConflictError(USER_MAIL_EXISTS));
       }
-
-      next(err);
+      return next(new BadRequestError(INCORRECT_DATA_CREAT_USER));
     });
 };
 
@@ -55,11 +51,7 @@ module.exports.updateUser = (req, res, next) => {
   const { name, email } = req.body;
 
   if (!name || !email) {
-    const err = new Error(
-      'INCORRECT_DATA_UPDATE_PROFILE',
-    );
-    err.statusCode = 400;
-    return next(err);
+    return next(new BadRequestError(INCORRECT_DATA_UPDATE_PROFILE));
   }
 
   User.findByIdAndUpdate(
@@ -72,14 +64,7 @@ module.exports.updateUser = (req, res, next) => {
   )
     .orFail(new Error('NotFound'))
     .then((user) => res.send(user))
-    .catch(() => {
-      const err = new Error(
-        'INCORRECT_DATA_UPDATE_PROFILE',
-      );
-      err.statusCode = 400;
-
-      next(err);
-    });
+    .catch(() => next(new BadRequestError(INCORRECT_DATA_UPDATE_PROFILE)));
 };
 
 module.exports.login = (req, res, next) => {
@@ -93,10 +78,5 @@ module.exports.login = (req, res, next) => {
       res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true });
       res.send({ token });
     })
-    .catch((error) => {
-      const err = new Error(error.message);
-      err.statusCode = 401;
-
-      next(err);
-    });
+    .catch((error) => next(new UnauthorizedError(error.message)));
 };

@@ -1,6 +1,7 @@
 const moviesRouter = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const isURL = require('validator/lib/isURL');
+const WRONG_URL = require('../utils/constants');
 
 const {
   getMovies,
@@ -26,7 +27,7 @@ moviesRouter.post(
     body: Joi.object().keys({
       country: Joi.string().required(),
       director: Joi.string().required(),
-      duration : Joi.number().required(),
+      duration: Joi.number().required(),
       year: Joi.string().required(),
       description: Joi.string().required(),
       image: Joi.string().required().custom((value, helper) => {
@@ -37,7 +38,7 @@ moviesRouter.post(
         })) {
           return value;
         }
-        return helper.message('WRONG_URL');
+        return helper.message(WRONG_URL);
       }),
       trailer: Joi.string().required().custom((value, helper) => {
         if (isURL(value, {
@@ -47,7 +48,7 @@ moviesRouter.post(
         })) {
           return value;
         }
-        return helper.message('WRONG_URL');
+        return helper.message(WRONG_URL);
       }),
       thumbnail: Joi.string().required().custom((value, helper) => {
         if (isURL(value, {
@@ -57,7 +58,7 @@ moviesRouter.post(
         })) {
           return value;
         }
-        return helper.message('WRONG_URL');
+        return helper.message(WRONG_URL);
       }),
       movieId: Joi.number().required(),
       nameRU: Joi.string().required(),

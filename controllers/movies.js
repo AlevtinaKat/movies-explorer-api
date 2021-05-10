@@ -1,4 +1,9 @@
 const Movie = require('../models/movie');
+const BadRequestError = require('../errors/BadRequestError');
+const ForbiddenError = require('../errors/ForbiddenError');
+const NotFoundError = require('../errors/NotFoundError');
+
+const { INCCORRECT_DATA_MOVIE, MOVIE_ID_NOT_FOUND, WRONG_MOVIE_OWNER } = require('../utils/constants');
 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({})
@@ -12,10 +17,7 @@ module.exports.createMovie = (req, res, next) => {
   Movie.create({ country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId, owner: req.user._id })
   .then((movie) => res.send(movie))
     .catch(() => {
-      const err = new Error(
-        'INCCORRECT_DATA_MOVIE',
-      );
-      err.statusCode = 400;
+      const err = new BadRequestError(INCCORRECT_DATA_MOVIE);
 
       next(err);
     });
@@ -28,18 +30,14 @@ module.exports.deleteMovie = (req, res, next) => {
         .then((movie) => res.send(movie));
     })
     .catch((error) => {
-      const err = new Error();
-      err.message = 'MOVIE_ID_NOT_FOUND';
-      err.statusCode = 404;
-
       if (error.message === 'WrongUser') {
-        err.statusCode = 403;
+        return next(new ForbiddenError(WRONG_MOVIE_OWNER));
       }
 
       if (error.name === 'CastError') {
-        err.statusCode = 400;
+        return next(new BadRequestError(MOVIE_ID_NOT_FOUND));
       }
 
-      next(err);
+      return next(new NotFoundError(MOVIE_ID_NOT_FOUND));
     });
 };

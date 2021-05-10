@@ -10,6 +10,7 @@ const { error } = require('./middlewares/error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routers/index.js');
 const { MONGO_ADDRES, PORT_NUMBER, WHITE_LIST } = require('./utils/constants');
+const rateLimiter = require('./middlewares/limmiter');
 
 mongoose.connect(MONGO_ADDRES, {
   useNewUrlParser: true,
@@ -43,6 +44,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
 
 app.use(helmet());
+
+app.use(rateLimiter);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.use('/', router);
 

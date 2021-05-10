@@ -4,6 +4,8 @@ const usersRouter = require('./users.js');
 const moviesRouter = require('./movies.js');
 const { createUser, login } = require('../controllers/users');
 const { auth } = require('../middlewares/auth');
+const EQUEST_NOT_FOUND = require('../utils/constants');
+const NotFoundError = require('../errors/NotFoundError');
 
 router.post(
   '/signup',
@@ -30,12 +32,6 @@ router.post(
 router.use('/users', auth, usersRouter);
 router.use('/movies', auth, moviesRouter);
 
-router.use('/*', (req, res, next) => {
-  const err = new Error();
-  err.message = 'EQUEST_NOT_FOUND';
-  err.statusCode = 404;
-
-  next(err);
-});
+router.use('/*', (req, res, next) => next(new NotFoundError(EQUEST_NOT_FOUND)));
 
 module.exports = router;

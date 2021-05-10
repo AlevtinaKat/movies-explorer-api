@@ -2,11 +2,12 @@ const MONGO_ADDRES = 'mongodb://localhost:27017/bitfilmsdb';
 const PORT_NUMBER = 3000;
 const WHITE_LIST = [
   'http://localhost:3000',
-  'https://akataeva.students.nomoredomains.icu',
-  'http://akataeva.students.nomoredomains.icu',
+  'https://films.nomoredomains.club',
+  'http://films.nomoredomains.club',
 ];
 
 const MOVIE_ID_NOT_FOUND = 'Фильм с указанным _id не найден';
+const WRONG_MOVIE_OWNER = 'Карточка фильма не принадлежит пользователю';
 const INCCORRECT_DATA_MOVIE = 'Переданы некорректные данные при добавлении фильма.';
 const INCORRECT_ID = 'Передан некорректный id';
 const USER_MAIL_EXISTS = 'Пользователь с таким email уже существует.';
@@ -35,4 +36,5 @@ module.exports = {
   WRONG_MAIL,
   INCORRECT_PASSWORD,
   REQUEST_NOT_FOUND,
+  WRONG_MOVIE_OWNER,
 };
