@@ -11,7 +11,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  duration : {
+  duration: {
     type: Number,
     required: true,
   },
@@ -23,7 +23,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  image : {
+  image: {
     type: String,
     required: true,
     validate: {
@@ -35,7 +35,7 @@ const movieSchema = new mongoose.Schema({
       message: 'WRONG_URL',
     },
   },
-  trailer : {
+  trailer: {
     type: String,
     required: true,
     validate: {
@@ -47,7 +47,7 @@ const movieSchema = new mongoose.Schema({
       message: 'WRONG_URL',
     },
   },
-  thumbnail : {
+  thumbnail: {
     type: String,
     required: true,
     validate: {
@@ -78,14 +78,13 @@ const movieSchema = new mongoose.Schema({
 });
 
 movieSchema.statics.findMovieById = function findMovieById(movieId, userId) {
-  return this.findOne({ _id: movieId })
-    .then((movie) => {
-      if (String(movie.owner) !== userId) {
-        throw new Error('WrongUser');
-      }
+  return this.findOne({ _id: movieId }).then((movie) => {
+    if (String(movie.owner) !== userId) {
+      throw new Error('WrongUser');
+    }
 
-      return movie;
-    });
+    return movie;
+  });
 };
 
 module.exports = mongoose.model('movie', movieSchema);

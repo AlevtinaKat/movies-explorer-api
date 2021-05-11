@@ -11,6 +11,7 @@ const WRONG_MOVIE_OWNER = 'Карточка фильма не принадлеж
 const INCCORRECT_DATA_MOVIE = 'Переданы некорректные данные при добавлении фильма.';
 const INCORRECT_ID = 'Передан некорректный id';
 const USER_MAIL_EXISTS = 'Пользователь с таким email уже существует.';
+const USER_MAIL_NOT_EXIST = 'Пользователь с таким email не существует.';
 const INCORRECT_DATA_CREAT_USER = 'Переданы некорректные данные при создании пользователя.';
 const INCORRECT_DATA_UPDATE_PROFILE = 'Переданы некорректные данные при обновлении профиля.';
 const WRONG_JWT_TOKEN = 'Неправильный JWT токен.';
@@ -28,6 +29,7 @@ module.exports = {
   INCCORRECT_DATA_MOVIE,
   INCORRECT_ID,
   USER_MAIL_EXISTS,
+  USER_MAIL_NOT_EXIST,
   INCORRECT_DATA_CREAT_USER,
   INCORRECT_DATA_UPDATE_PROFILE,
   WRONG_JWT_TOKEN,

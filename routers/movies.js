@@ -30,36 +30,48 @@ moviesRouter.post(
       duration: Joi.number().required(),
       year: Joi.string().required(),
       description: Joi.string().required(),
-      image: Joi.string().required().custom((value, helper) => {
-        if (isURL(value, {
-          protocols: ['http', 'https'],
-          require_tld: true,
-          require_protocol: true,
-        })) {
-          return value;
-        }
-        return helper.message(WRONG_URL);
-      }),
-      trailer: Joi.string().required().custom((value, helper) => {
-        if (isURL(value, {
-          protocols: ['http', 'https'],
-          require_tld: true,
-          require_protocol: true,
-        })) {
-          return value;
-        }
-        return helper.message(WRONG_URL);
-      }),
-      thumbnail: Joi.string().required().custom((value, helper) => {
-        if (isURL(value, {
-          protocols: ['http', 'https'],
-          require_tld: true,
-          require_protocol: true,
-        })) {
-          return value;
-        }
-        return helper.message(WRONG_URL);
-      }),
+      image: Joi.string()
+        .required()
+        .custom((value, helper) => {
+          if (
+            isURL(value, {
+              protocols: ['http', 'https'],
+              require_tld: true,
+              require_protocol: true,
+            })
+          ) {
+            return value;
+          }
+          return helper.message(WRONG_URL);
+        }),
+      trailer: Joi.string()
+        .required()
+        .custom((value, helper) => {
+          if (
+            isURL(value, {
+              protocols: ['http', 'https'],
+              require_tld: true,
+              require_protocol: true,
+            })
+          ) {
+            return value;
+          }
+          return helper.message(WRONG_URL);
+        }),
+      thumbnail: Joi.string()
+        .required()
+        .custom((value, helper) => {
+          if (
+            isURL(value, {
+              protocols: ['http', 'https'],
+              require_tld: true,
+              require_protocol: true,
+            })
+          ) {
+            return value;
+          }
+          return helper.message(WRONG_URL);
+        }),
       movieId: Joi.number().required(),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),

@@ -5,7 +5,12 @@ const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const ConflictError = require('../errors/ConflictError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
-const { INCORRECT_ID, USER_MAIL_EXISTS, INCORRECT_DATA_CREAT_USER, INCORRECT_DATA_UPDATE_PROFILE } = require('../utils/constants');
+const {
+  INCORRECT_ID,
+  USER_MAIL_EXISTS,
+  INCORRECT_DATA_CREAT_USER,
+  INCORRECT_DATA_UPDATE_PROFILE,
+} = require('../utils/constants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -72,10 +77,18 @@ module.exports.login = (req, res, next) => {
 
   User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {
-        expiresIn: '7d',
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        {
+          expiresIn: '7d',
+        },
+      );
+      res.cookie('jwt', token, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+        sameSite: true,
       });
-      res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true });
       res.send({ token });
     })
     .catch((error) => next(new UnauthorizedError(error.message)));

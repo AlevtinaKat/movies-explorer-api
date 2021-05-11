@@ -1,9 +1,12 @@
 /* eslint-disable indent */
 const bcrypt = require('bcryptjs');
 const isEmail = require('validator/lib/isEmail');
-const isURL = require('validator/lib/isURL');
 const mongoose = require('mongoose');
-const { WRONG_MAIL, USER_MAIL_EXISTS, INCORRECT_PASSWORD } = require('../utils/constants');
+const {
+  WRONG_MAIL,
+  USER_MAIL_NOT_EXIST,
+  INCORRECT_PASSWORD,
+} = require('../utils/constants');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -36,7 +39,7 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
     .select('+password')
     .then((user) => {
       if (!user) {
-        throw new Error(USER_MAIL_EXISTS);
+        throw new Error(USER_MAIL_NOT_EXIST);
       }
 
       return bcrypt.compare(password, user.password).then((matched) => {
