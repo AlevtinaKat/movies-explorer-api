@@ -12,14 +12,14 @@ const router = require('./routers/index.js');
 const { MONGO_ADDRES, PORT_NUMBER, WHITE_LIST } = require('./utils/constants');
 const rateLimiter = require('./middlewares/limmiter');
 
-mongoose.connect(MONGO_ADDRES, {
+const { PORT = PORT_NUMBER, MONGO_URL, NODE_ENV } = process.env;
+
+mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : MONGO_ADDRES, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
-
-const { PORT = PORT_NUMBER } = process.env;
 
 const app = express();
 
